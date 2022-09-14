@@ -30,6 +30,7 @@ function App() {
             <Withdraw
               ethaddress={ethaddress}
               sequenceWallet={sequenceWallet}
+              ethProvider={ethProvider}
               contractHeir={contractHeir}
               contractNFT={contractNFT} />
           </Grid> } />

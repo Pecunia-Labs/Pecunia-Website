@@ -10,6 +10,8 @@ function Register({ ethaddress, sequenceWallet, contractHeir }) {
   const [timeAmount, setTimeAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [proof, setProof] = useState([]);
+  const [payment, setPayment] = useState("");
+  const [time, setTime] = useState("");
 
   const registerBox = async () => {
     try{
@@ -34,7 +36,9 @@ function Register({ ethaddress, sequenceWallet, contractHeir }) {
       const { p } = await response.json();
       console.log(p);
       setProof(p.proof);
-      const transaction = await contractHeir.register(p.boxhash, p.proof, p.pswHash, p.allHash, timeAmount);
+      // let timeIntBetweenPayments = 5 //time interval between the payments done to heir
+      // let numberOfPayments = 2 //number of payments done toheir
+      const transaction = await contractHeir.register(p.boxhash, p.proof, p.pswHash, p.allHash, timeAmount, payment, time);
       const tx = await transaction.wait();
       console.log(tx);
       changePage("/dashboard");
@@ -55,8 +59,16 @@ function Register({ ethaddress, sequenceWallet, contractHeir }) {
             <Input type='password' onChange={(e) => setPassword(e.target.value)} />
           </FormControl>
           <FormControl mb="3">
-            <FormLabel>Time Amount</FormLabel>
+            <FormLabel>Time to Cancel Payment</FormLabel>
             <Input  onChange={(e) => setTimeAmount(e.target.value)}/>
+          </FormControl>
+          <FormControl mb="3">
+            <FormLabel>Number of Payments</FormLabel>
+            <Input onChange={(e) => setPayment(e.target.value)}/>
+          </FormControl>
+          <FormControl mb="3">
+            <FormLabel>Time Interval between the payments</FormLabel>
+            <Input onChange={(e) => setTime(e.target.value)}/>
           </FormControl>
           {loading
             ? <Spinner color='teal' />

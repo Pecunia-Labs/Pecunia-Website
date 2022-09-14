@@ -39,7 +39,7 @@ function Dashboard({ ethaddress, ethProvider, contractHeir, contractNFT }) {
     }
   }
   
-
+  
   const addHeir = async () => {
     try{
       setLoading(true);
@@ -47,6 +47,20 @@ function Dashboard({ ethaddress, ethProvider, contractHeir, contractNFT }) {
       const tx = await transaction.wait();
       console.log(tx);
       setheris([...heris, { heirAddress, amount}]);
+      setLoading(false);
+    }
+    catch(err) {
+      console.error(err);
+      setLoading(false);
+    }
+  }
+
+  const cancelBoxAndTransferFundsToOwner = async () => {
+    try{
+      setLoading(true);
+      const transaction = await contractHeir.cancelBoxAndTransferFundsToOwner({ gasLimit: 1e6 });
+      const tx = await transaction.wait();
+      console.log(tx);
       setLoading(false);
     }
     catch(err) {
@@ -113,9 +127,15 @@ function Dashboard({ ethaddress, ethProvider, contractHeir, contractNFT }) {
                   <Input placeholder='MATIC' variant='filled' mb="3" onChange={(e) => setAmount(e.target.value)} />
                   {loading 
                     ? <Spinner color='yellow' />
-                    : <Button colorScheme='yellow' onClick={addHeir}>
-                    Add Heir
-                  </Button>}
+                    : <>
+                    <Button colorScheme='yellow' onClick={addHeir}>
+                      Add Heir
+                    </Button>
+                    <hr/>
+                    <Button colorScheme='red' onClick={cancelBoxAndTransferFundsToOwner}>
+                      Cancel All
+                    </Button>
+                      </>}
                 </>
               : <Text color="white" fontSize='md'>You need to resigter</Text>
             }

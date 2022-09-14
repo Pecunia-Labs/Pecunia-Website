@@ -1,5 +1,5 @@
-export const CONTRACT_ADDRESS = "0x45C38Ce5dDd5b34f2da4674cA0C3FeD18FB54dbb";
-export const NFTCONTRACT_ADDRESS = "0x2597fC30474291CAdf084C1393A42142B0911713";
+export const CONTRACT_ADDRESS = "0x07cb0997a4c1bA6656f641Afa11629E48c0B58fD";
+export const NFTCONTRACT_ADDRESS = "0xe72002b25dC723e1a6C48eD9FF30113f2465cc6f";
 export const NFT_ABI = [
 	{
 		"inputs": [],
@@ -436,6 +436,19 @@ export const ABI = [
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "BoxCanceled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "uint256",
         "name": "amountAdded",
@@ -538,7 +551,7 @@ export const ABI = [
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "owner",
         "type": "address"
       }
     ],
@@ -551,7 +564,7 @@ export const ABI = [
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "owner",
         "type": "address"
       },
       {
@@ -586,8 +599,23 @@ export const ABI = [
         "type": "bytes32"
       },
       {
+        "internalType": "uint64",
+        "name": "numberOfPayments",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "paymentsDoneToHeir",
+        "type": "uint64"
+      },
+      {
         "internalType": "address",
         "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "nftAddress",
         "type": "address"
       },
       {
@@ -597,16 +625,33 @@ export const ABI = [
       },
       {
         "internalType": "uint256",
-        "name": "lastTimeStamp",
+        "name": "timeAtWhichPaymentStarts",
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "nftAddress",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "totalDeposit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lastPaymentTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timeIntBetweenPayments",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "cancelBoxAndTransferFundsToOwner",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -897,19 +942,27 @@ export const ABI = [
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "heirToken",
+    "outputs": [
       {
-        "internalType": "bytes32",
-        "name": "boxhash",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "heir",
+        "internalType": "contract HeirToken",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "heirIsValid",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "isHeirTokenValid",
     "outputs": [
       {
         "internalType": "bool",
@@ -922,12 +975,12 @@ export const ABI = [
   },
   {
     "inputs": [],
-    "name": "heirToken",
+    "name": "minTimeIntBetweenPayments",
     "outputs": [
       {
-        "internalType": "contract HeirToken",
+        "internalType": "uint32",
         "name": "",
-        "type": "address"
+        "type": "uint32"
       }
     ],
     "stateMutability": "view",
@@ -1040,6 +1093,16 @@ export const ABI = [
         "internalType": "uint256",
         "name": "interval",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timeIntBetweenPayments",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint64",
+        "name": "numberOfPayments",
+        "type": "uint64"
       }
     ],
     "name": "register",
